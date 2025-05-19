@@ -3,7 +3,7 @@
   <div class="col-8 offset-2">
     <h3>Edit your Listing</h3>
     <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
-      
+
       <!-- Title -->
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -33,15 +33,15 @@
         <div class="invalid-feedback">Please provide a description</div>
       </div>
 
-      <!-- Image -->
+      <!-- Image (STRING input) -->
       <div class="mb-3">
         <label for="image" class="form-label">Image Link</label>
         <input
           type="text"
           class="form-control"
           id="image"
-          name="listing[image]"
-          value="<%= listing.image %>"
+          name="listing[image][url]"
+          value="<%= listing.image.url %>"
           required
         />
         <div class="valid-feedback">Image link looks good</div>
