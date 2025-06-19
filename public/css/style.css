@@ -1,0 +1,94 @@
+/*body {
+    background-color:yellow;
+}*/
+.navbar {
+    height: 5rem;
+    background-color: white;
+}
+.fa-compass {
+    color: #fe424d;
+    font-size: 2rem;
+}
+.nav-link {
+    color: blue;
+}
+.f-info-links a{
+    text-decoration: none;
+    color: #222222;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+.f-info-links {
+    width: 100%;
+    justify-content: center;
+}
+.f-info-socials, .f-info-brand {
+    width: 100%;
+}
+.f-info-socials i {
+    margin-right: 1rem;
+    font-size: 1.5rem;
+
+}
+.f-info {
+    text-align: center;
+    height: 8rem;
+    display: flex;
+    background-color: #ebebeb;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+
+}
+.cards {
+    border: none !important;
+    margin-bottom: 2rem;
+}
+.card-img-top {
+    border-radius: 1rem !important;
+    width: 100 !important;
+    object-fit: cover !important;
+}
+.card-body {
+    padding: 0;
+}
+.card-text p{
+    font-weight: 400;
+}
+.listing-link {
+    text-decoration: none;
+}
+.card-img-overlay {
+    opacity: 0;
+}
+.add-btn {
+    background-color: #fe424d;
+    border: none;
+}
+.edit-btn {
+    background-color: #fe424d;
+    border: none;
+}
+.show img {
+   height: 30vh;
+}
+.btns {
+    display: flex;
+  
+}
+
+.starability-slot {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    white-space: nowrap;
+    max-width: 100%;
+}
+img{
+    min-width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}

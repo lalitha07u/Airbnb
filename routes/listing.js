@@ -2,73 +2,45 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
-const {isLoggedIn, isOwner, validateListing} = require("../middleware.js");
+const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
+const listingController = require("../controllers/listing.js");
+const multer = require('multer');
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
 
-// Index route
-router.get("/", wrapAsync(async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index", { allListings });
-}));
+// ✅ ADD THIS MISSING ROUTE
+router.get("/", wrapAsync(listingController.index));
 
 // New listing form
-router.get("/new",isLoggedIn, (req, res) => {
-  console.log(req.user);
-  
-  res.render("listings/new.ejs");
-});
+router.get("/new", isLoggedIn, listingController.renderNewForm);
 
-// Show route
-router.get("/:id", wrapAsync(async (req, res) => {
-  const { id } = req.params;
-  const listing = await Listing.findById(id).populate("reviews").populate("owner");
-  if(!listing) {
-    req.flash("error","listing you requested doesn't exist");
-    res.redirect("/listings");
-  }
-  console.log(listing);
-  res.render("listings/show.ejs", { listing });
-}));
+// Create a new listing
+router.post(
+  "/",
+  isLoggedIn,
+  upload.single("image"), // ✅ input name should be "image"
+  validateListing,
+  wrapAsync(listingController.createListing)
+);
 
-// Create listing
-router.post("/",isLoggedIn,isOwner, validateListing, wrapAsync(async (req, res) => {
-  const newListing = new Listing(req.body.listing);
-  newListing.owner = req.user._id;
-  await newListing.save();
-  req.flash("success","new listing created");
-  res.redirect("/listings");
-}));
-//delete
-router.delete("/:id",isLoggedIn,isOwner, wrapAsync(async (req, res) => {
-  const { id } = req.params;
-  await Listing.findByIdAndDelete(id);
-  console.log("deleted listing");
-  req.flash("success","listing deleted");
-  res.redirect("/listings");
-}));
+// Edit listing form
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm));
 
-// Edit form
-router.get("/:id/edit",isLoggedIn, wrapAsync(async (req, res) => {
-  const { id } = req.params;
-  const listing = await Listing.findById(id);
-  if(!listing) {
-    req.flash("error","listing you requested doesn't exist");
-    res.redirect("/listings");
-  }
-  res.render("listings/edit.ejs", { listing });
-}));
-
-// Update listing
-router.put("/:id",isLoggedIn, validateListing, wrapAsync(async (req, res) => {
-  let { id } = req.params;
-  let listing = await Listing.findById(id);
-  if(!listing.owner.equals(res.locals.currUser._id)) {
-    req.flash("error","you don't have permission to edit");
-    return redirect(`/listings/${id}`);
-
-  }
-  const updatedListing = await Listing.findByIdAndUpdate(id, req.body.listing, { new: true });
-  req.flash("success","listing updated");
-  res.redirect(`/listings/${updatedListing._id}`);
-}));
+// Show, update, delete routes
+router
+  .route("/:id")
+  .get(wrapAsync(listingController.showListing))
+  .put(
+    isLoggedIn,
+    isOwner,
+    upload.single("image"), // ✅ file input must use name="image"
+    validateListing,
+    wrapAsync(listingController.updateListing)
+  )
+  .delete(
+    isLoggedIn,
+    isOwner,
+    wrapAsync(listingController.destroyListing)
+  );
 
 module.exports = router;
