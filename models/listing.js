@@ -4,43 +4,55 @@ const Review = require("./review.js");
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
-  title: String,
-  description: String,
+  title: {
+    type: String,
+    required: true
+  },
+
+  description: {
+    type: String,
+    required: true
+  },
+
   image: {
-    url: {
-      type: String,
-      required: false   // ✅ Optional
-    },
-    filename: {
-      type: String,
-      required: false   // ✅ Optional
-    }
-  }, // ✅ <-- Comma added here
+    url: String,
+    filename: String
+  },
 
-  price: Number,
-  location: String,
-  country: String,
+  price: {
+    type: Number,
+    required: true
+  },
 
-  reviews: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Review",
-    },
-  ],
+  location: {
+    type: String,
+    required: true
+  },
+
+  country: {
+    type: String,
+    required: true
+  },
 
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true
   },
+
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Review"
+    }
+  ]
 });
 
-// Middleware: Cascade delete reviews when a listing is deleted
+// ✅ Cascade delete reviews if listing is deleted
 listingSchema.post("findOneAndDelete", async function (listing) {
   if (listing) {
     await Review.deleteMany({ _id: { $in: listing.reviews } });
   }
 });
 
-// Export the model
-const Listing = mongoose.model("Listing", listingSchema);
-module.exports = Listing;
+module.exports = mongoose.model("Listing", listingSchema);

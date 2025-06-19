@@ -92,3 +92,8 @@ img{
     object-fit: cover;
     border-radius: 8px;
 }
+
+#map { 
+  height: 400px; 
+  width: 80vh;
+}

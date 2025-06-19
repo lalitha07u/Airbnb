@@ -4,9 +4,8 @@
   <h3 class="col-6 offset-3">Create a New Listing</h3>
 
   <div class="col-6 offset-3">
-    <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
-
-   
+    <form method="POST" action="/listings" enctype="multipart/form-data" class="needs-validation" novalidate>
+      
       <!-- Title -->
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -21,32 +20,31 @@
         <div class="invalid-feedback">Description is required</div>
       </div>
 
-
-      <!-- Image URL -->
+      <!-- ✅ Image File Input (fixed name) -->
       <div class="mb-3">
-        <label for="image" class="form-label"> Upload listing image </label>
-        <input name="listing[image]" id="image" type="file" class="form-control" placeholder="Enter image URL" required />
-        <div class="invalid-feedback">Please provide an image URL</div>
+        <label for="image" class="form-label">Upload Listing Image</label>
+        <input name="image" id="image" type="file" class="form-control" required />
+        <div class="invalid-feedback">Please upload an image</div>
       </div>
 
       <!-- Price -->
       <div class="mb-3">
         <label for="price" class="form-label">Price</label>
-        <input name="listing[price]" id="price" type="number" class="form-control" placeholder="Enter price" required />
+        <input name="listing[price]" id="price" type="number" class="form-control" required />
         <div class="invalid-feedback">Price is required</div>
       </div>
 
       <!-- Country -->
       <div class="mb-3">
         <label for="country" class="form-label">Country</label>
-        <input name="listing[country]" id="country" type="text" class="form-control" placeholder="Enter country" required />
+        <input name="listing[country]" id="country" type="text" class="form-control" required />
         <div class="invalid-feedback">Country is required</div>
       </div>
 
       <!-- Location -->
       <div class="mb-3">
         <label for="location" class="form-label">Location</label>
-        <input name="listing[location]" id="location" type="text" class="form-control" placeholder="Enter location" required />
+        <input name="listing[location]" id="location" type="text" class="form-control" required />
         <div class="invalid-feedback">Location is required</div>
       </div>
 
@@ -57,17 +55,17 @@
 </div>
 
 <script>
-  (() => {
-    'use strict';
-    const forms = document.querySelectorAll('.needs-validation');
-    Array.from(forms).forEach(form => {
-      form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  })();
+(() => {
+  'use strict';
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
 </script>
